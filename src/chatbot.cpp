@@ -8,9 +8,12 @@
 #include "graphedge.h"
 #include "chatbot.h"
 
+using std::cout;
+
 // constructor WITHOUT memory allocation
 ChatBot::ChatBot()
 {
+    cout << "ChatBot Constructor W/O memory allocation" << "\n";
     // invalidate data handles
     _image = nullptr;
     _chatLogic = nullptr;
@@ -20,7 +23,7 @@ ChatBot::ChatBot()
 // constructor WITH memory allocation
 ChatBot::ChatBot(std::string filename)
 {
-    std::cout << "ChatBot Constructor" << std::endl;
+    cout << "ChatBot Constructor WITH memory allocation" << "\n";
     
     // invalidate data handles
     _chatLogic = nullptr;
@@ -32,7 +35,7 @@ ChatBot::ChatBot(std::string filename)
 
 ChatBot::~ChatBot()
 {
-    std::cout << "ChatBot Destructor" << std::endl;
+    cout << "ChatBot Destructor" << "\n";
 
     // deallocate heap memory
     if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
@@ -44,6 +47,72 @@ ChatBot::~ChatBot()
 
 //// STUDENT CODE
 ////
+
+// NOTE: copy (&) constructor 
+ChatBot::ChatBot(const ChatBot & src) {
+     cout << "copying " << &src << " to " << this << "\n";
+
+    _image = new wxBitmap(*src._image);
+
+    _chatLogic = src._chatLogic;
+    _rootNode = src._rootNode;
+}
+
+// NOTE: move (&&) constructor
+ChatBot::ChatBot(ChatBot && src) {
+    cout << "moving " << &src << " to " << this << "\n";
+    
+    // 1. copying src data to this object
+    _chatLogic = src._chatLogic;
+    _rootNode = src._rootNode;
+    _image = src._image;
+
+    // 2. pointing src data to null, effectively "deleting" it
+    src._chatLogic = nullptr;
+    src._rootNode = nullptr;
+    src._image = nullptr;
+}
+
+// NOTE: copy (&) assignment constructor
+ChatBot &ChatBot::operator=(const ChatBot & src) {
+
+    cout << "assigning " << &src << " to " << this << "\n";
+
+    // 1. verify that we are not trying to assign an object to itself;
+    if (this == &src) {
+        return *this;
+    }
+
+    // 2. copy data
+    _image = new wxBitmap(*src._image);
+    
+    _chatLogic = src._chatLogic;
+    _rootNode = src._rootNode;
+
+    return *this;
+}
+
+// NOTE: move (&&) assignment constructor
+ChatBot &ChatBot::operator=(ChatBot && src) {
+
+    cout << "moving " << &src << " to " << this << "\n";
+
+    if (this == &src) {
+        return *this;
+    }
+    
+    // 1. copying src data to this object
+    _chatLogic = src._chatLogic;
+    _rootNode = src._rootNode;
+    _image = src._image;
+
+    // 2. pointing src data to null, effectively "deleting" it
+    src._chatLogic = nullptr;
+    src._rootNode = nullptr;
+    src._image = nullptr;
+
+    return *this;
+}
 
 ////
 //// EOF STUDENT CODE
