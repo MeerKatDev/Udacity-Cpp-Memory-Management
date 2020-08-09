@@ -118,7 +118,8 @@ ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
     ////
 
     // create chat logic instance
-    _chatLogic = new ChatLogic(); 
+    // NOTE: make _chatLogic an exclusive resource to class
+    _chatLogic = std::make_unique<ChatLogic>();
 
     // pass pointer to chatbot dialog so answers can be displayed in GUI
     _chatLogic->SetPanelDialogHandle(this);
@@ -135,7 +136,9 @@ ChatBotPanelDialog::~ChatBotPanelDialog()
     //// STUDENT CODE
     ////
 
-    delete _chatLogic;
+    // NOTE: cannot delete a resource which is automatically handled 
+    // or more specifically, "error: cannot delete expression of type 'std::unique_ptr<ChatLogic>'"
+    // delete _chatLogic;
 
     ////
     //// EOF STUDENT CODE
