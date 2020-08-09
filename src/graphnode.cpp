@@ -1,5 +1,6 @@
 #include "graphedge.h"
 #include "graphnode.h"
+#include <iostream>
 
 GraphNode::GraphNode(int id)
 {
@@ -11,7 +12,10 @@ GraphNode::~GraphNode()
     //// STUDENT CODE
     ////
 
-    delete _chatBot; 
+    // NOTE: no need to call delete on this member, 
+    // because the implicit destructor will take care of it automatically.
+    // The program crashes because here it attempts to free an address which was already deallocated 
+    //  delete _chatBot; 
 
     ////
     //// EOF STUDENT CODE
